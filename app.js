@@ -1689,10 +1689,13 @@ function bindEvents() {
     showToast(`Prenda "${name}" publicada en el catálogo.`);
   });
 
-  // Admin: Recargar desde Supabase
-  document.getElementById("resetDemoBtn").addEventListener("click", () => {
-    syncFromSupabase(true);
-  });
+  // Admin: Recargar desde Supabase (si existe el botón)
+  const resetDemoBtn = document.getElementById("resetDemoBtn");
+  if (resetDemoBtn) {
+    resetDemoBtn.addEventListener("click", () => {
+      syncFromSupabase(true);
+    });
+  }
 }
 
 // ---------- Arranque ----------
