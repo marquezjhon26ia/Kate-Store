@@ -60,7 +60,7 @@ const INITIAL_PRODUCTS = [
     badge: "Más vendido",
     stock: 14,
     views: 342,
-    image: "assets/vestido-brisa.jpg",
+    image: "./assets/vestido-brisa.jpg",
     angles: [
       { label: "Vista frontal", pos: "50% 25%", scale: 1 },
       { label: "Detalle superior", pos: "50% 15%", scale: 1.55 },
@@ -93,7 +93,7 @@ const INITIAL_PRODUCTS = [
     badge: "Nuevo",
     stock: 9,
     views: 289,
-    image: "assets/conjunto-cabo.jpg",
+    image: "./assets/conjunto-cabo.jpg",
     angles: [
       { label: "Conjunto completo", pos: "50% 30%", scale: 1 },
       { label: "Detalle top", pos: "50% 18%", scale: 1.6 },
@@ -126,7 +126,7 @@ const INITIAL_PRODUCTS = [
     badge: "Oferta",
     stock: 18,
     views: 256,
-    image: "assets/blusa-palma.jpg",
+    image: "./assets/blusa-palma.jpg",
     angles: [
       { label: "Vista principal", pos: "50% 25%", scale: 1 },
       { label: "Detalle bordado", pos: "50% 30%", scale: 1.7 },
@@ -158,7 +158,7 @@ const INITIAL_PRODUCTS = [
     badge: "Oferta",
     stock: 7,
     views: 318,
-    image: "assets/vestido-atardecer.jpg",
+    image: "./assets/vestido-atardecer.jpg",
     angles: [
       { label: "Vista completa", pos: "50% 25%", scale: 1 },
       { label: "Escote cruzado", pos: "50% 20%", scale: 1.65 },
@@ -191,7 +191,7 @@ const INITIAL_PRODUCTS = [
     badge: "Nuevo",
     stock: 12,
     views: 174,
-    image: "assets/falda-arena.jpg",
+    image: "./assets/falda-arena.jpg",
     angles: [
       { label: "Vista frontal", pos: "50% 45%", scale: 1 },
       { label: "Detalle pretina", pos: "50% 35%", scale: 1.6 },
@@ -224,7 +224,7 @@ const INITIAL_PRODUCTS = [
     badge: "Artesanal",
     stock: 6,
     views: 215,
-    image: "assets/bolso-guajira.jpg",
+    image: "./assets/bolso-guajira.jpg",
     angles: [
       { label: "Vista estudio", pos: "50% 50%", scale: 1 },
       { label: "Detalle tejido", pos: "50% 58%", scale: 1.7 },

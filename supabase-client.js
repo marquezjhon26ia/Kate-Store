@@ -4,11 +4,40 @@
 
 const SUPABASE_URL = "https://kyyydvrngcqlcpsyqfud.supabase.co";
 const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_W3P2uEa49oXitZ8yvV9rPw_eB3k8enW";
+const SUPABASE_STORAGE_BUCKET = "product-images";
+const SUPABASE_STORAGE_BASE = `${SUPABASE_URL}/storage/v1/object/public/${SUPABASE_STORAGE_BUCKET}`;
 
 let supabaseClient = null;
 if (typeof window !== "undefined" && window.supabase && typeof window.supabase.createClient === "function") {
   supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 }
+
+// Normaliza rutas relativas para funcionar en producción (GitHub Pages, Netlify, Vercel) y local
+function normalizeImageSrc(src) {
+  if (!src) return "./assets/vestido-brisa.jpg";
+  if (/^https?:\/\//i.test(src) || src.startsWith("data:") || src.startsWith("./")) {
+    return src;
+  }
+  return `./${src.replace(/^\/+/, "")}`;
+}
+
+// Fallback automático bidireccional: ./assets/<archivo> <-> Supabase Storage público
+window.handleKateImgError = function handleKateImgError(imgEl) {
+  if (!imgEl || imgEl.dataset.fallbackTried === "1") return;
+  imgEl.dataset.fallbackTried = "1";
+
+  const currentSrc = imgEl.getAttribute("src") || "";
+  const fileName = currentSrc.split("?")[0].split("/").pop();
+  if (!fileName) return;
+
+  if (/^https?:\/\//i.test(currentSrc)) {
+    // Si falló la URL remota de Supabase Storage, intenta la ruta local ./assets/
+    imgEl.src = `./assets/${fileName}`;
+  } else {
+    // Si falló la ruta local ./assets/ en producción, intenta Supabase Storage público
+    imgEl.src = `${SUPABASE_STORAGE_BASE}/${encodeURIComponent(fileName)}`;
+  }
+};
 
 // Conversores DB (snake_case) <-> Frontend (camelCase)
 function mapProductFromDB(row) {
@@ -23,7 +52,7 @@ function mapProductFromDB(row) {
     badge: row.badge || null,
     stock: Number(row.stock) || 0,
     views: Number(row.views) || 0,
-    image: row.image,
+    image: normalizeImageSrc(row.image),
     angles: Array.isArray(row.angles) ? row.angles : [],
     colors: Array.isArray(row.colors) ? row.colors : [],
     sizes: Array.isArray(row.sizes) ? row.sizes : ["Única"],
@@ -131,6 +160,36 @@ const KateDB = {
       .update({ price: Number(price), stock: Number(stock), updated_at: new Date().toISOString() })
       .eq("id", id);
     if (error) throw error;
+  },
+
+  async updateProductImage(id, imageUrl) {
+    if (!supabaseClient) return;
+    const { error } = await supabaseClient
+      .from("products")
+      .update({ image: imageUrl, updated_at: new Date().toISOString() })
+      .eq("id", id);
+    if (error) throw error;
+  },
+
+  async uploadProductImage(file, customBaseName) {
+    if (!supabaseClient) throw new Error("SDK de Supabase no cargado");
+    const ext = (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const safeName = (customBaseName || `prenda-${Date.now()}`)
+      .toLowerCase()
+      .replace(/[^a-z0-9-_]/g, "-");
+    const filePath = `${safeName}-${Date.now()}.${ext}`;
+
+    const { error } = await supabaseClient.storage
+      .from(SUPABASE_STORAGE_BUCKET)
+      .upload(filePath, file, { upsert: true, contentType: file.type || "image/jpeg" });
+
+    if (error) throw error;
+
+    const { data } = supabaseClient.storage
+      .from(SUPABASE_STORAGE_BUCKET)
+      .getPublicUrl(filePath);
+
+    return data.publicUrl;
   },
 
   async incrementProductViews(id) {

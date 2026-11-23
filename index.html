@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="./styles.css" />
 </head>
 <body>
   <!-- Barra superior promocional -->
@@ -48,7 +48,7 @@
          ====================================================== -->
     <section id="view-inicio" class="page-view">
       <div class="hero">
-        <img src="assets/hero-banner.jpg" alt="Colección Caribe Kate Store Maicao" class="hero-bg" />
+        <img src="./assets/hero-banner.jpg" alt="Colección Caribe Kate Store Maicao" class="hero-bg" onerror="handleKateImgError(this)" />
         <div class="hero-overlay"></div>
         <div class="hero-content">
           <span class="hero-eyebrow">Nueva Colección • Brisa de La Guajira</span>
@@ -517,6 +517,10 @@
           </div>
         </div>
         <div class="field">
+          <label for="npImageFile">Imagen de la prenda (se sube a Supabase Storage)</label>
+          <input type="file" id="npImageFile" class="input-field" accept="image/*" />
+        </div>
+        <div class="field">
           <label for="npDesc">Descripción</label>
           <textarea id="npDesc" class="input-field" rows="3" placeholder="Descripción persuasiva de la prenda..." required></textarea>
         </div>
@@ -560,8 +564,8 @@
   <div class="toast-stack" id="toastStack" aria-live="polite"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="data.js"></script>
-  <script src="supabase-client.js"></script>
-  <script src="app.js"></script>
+  <script src="./data.js"></script>
+  <script src="./supabase-client.js"></script>
+  <script src="./app.js"></script>
 </body>
 </html>

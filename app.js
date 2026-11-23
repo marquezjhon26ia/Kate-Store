@@ -230,7 +230,7 @@ function createProductCardHTML(p) {
   return `
     <article class="product-card">
       <div class="product-media" data-open-product="${p.id}">
-        <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        <img src="${normalizeImageSrc(p.image)}" alt="${p.name}" loading="lazy" onerror="handleKateImgError(this)" />
         ${badgeText ? `<span class="product-badge ${badgeClass}">${badgeText}</span>` : ""}
       </div>
       <div class="product-body">
@@ -406,7 +406,7 @@ function renderProductDetailModal() {
       (a, idx) => `
       <button class="thumb-btn ${idx === detailState.angleIdx ? "active" : ""}" data-angle-idx="${idx}">
         <div class="thumb-preview">
-          <img src="${p.image}" alt="${a.label}" style="object-position:${a.pos}; transform:scale(${a.scale});" />
+          <img src="${normalizeImageSrc(p.image)}" alt="${a.label}" onerror="handleKateImgError(this)" style="object-position:${a.pos}; transform:scale(${a.scale});" />
         </div>
         <span class="thumb-caption">${a.label}</span>
       </button>
@@ -439,8 +439,9 @@ function renderProductDetailModal() {
         <div class="zoom-stage ${detailState.zoomed ? "zoomed" : ""}" id="zoomStage" title="Haz clic para acercar o alejar">
           <img
             id="zoomImg"
-            src="${p.image}"
+            src="${normalizeImageSrc(p.image)}"
             alt="${p.name}"
+            onerror="handleKateImgError(this)"
             style="object-position:${angle.pos}; transform:scale(${detailState.zoomed ? Math.max(angle.scale * 1.45, 2.05) : angle.scale});"
           />
           <span class="zoom-hint">${detailState.zoomed ? "🔍 Clic para alejar" : "🔍 Clic para hacer zoom"}</span>
@@ -710,7 +711,7 @@ function renderCartDrawer() {
     .map(
       (item) => `
       <div class="cart-item">
-        <img src="${item.image}" alt="${item.name}" />
+        <img src="${normalizeImageSrc(item.image)}" alt="${item.name}" onerror="handleKateImgError(this)" />
         <div>
           <div class="cart-item-title">${item.name}</div>
           <div class="cart-item-meta">Talla: <strong>${item.size}</strong> • Color: <strong>${item.color}</strong></div>
@@ -1265,7 +1266,7 @@ function renderInventoryTable() {
       <tr>
         <td>
           <div style="display:flex; align-items:center; gap:0.65rem;">
-            <img src="${p.image}" alt="${p.name}" style="width:42px; height:52px; object-fit:cover; border-radius:6px;" />
+            <img src="${normalizeImageSrc(p.image)}" alt="${p.name}" onerror="handleKateImgError(this)" style="width:42px; height:52px; object-fit:cover; border-radius:6px;" />
             <div>
               <strong>${p.name}</strong>
               <div style="font-size:0.75rem; color:var(--text-muted);">${p.sku}</div>
@@ -1281,12 +1282,45 @@ function renderInventoryTable() {
         </td>
         <td>${p.views || 0}</td>
         <td>
-          <button class="btn btn-dark btn-sm" data-save-inv="${p.id}">Guardar</button>
+          <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+            <button class="btn btn-dark btn-sm" data-save-inv="${p.id}">Guardar</button>
+            <label class="btn btn-outline btn-sm" style="cursor:pointer; margin:0;" title="Subir nueva foto a Supabase Storage">
+              📷 Foto
+              <input type="file" accept="image/*" data-upload-img="${p.id}" style="display:none;" />
+            </label>
+          </div>
         </td>
       </tr>
     `
     )
     .join("");
+
+  tbody.querySelectorAll("[data-upload-img]").forEach((input) => {
+    input.addEventListener("change", async (e) => {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      const id = input.dataset.uploadImg;
+      const prod = state.products.find((p) => p.id === id);
+      if (!prod) return;
+
+      showToast(`Subiendo foto de ${prod.name}...`);
+      try {
+        const publicUrl = await KateDB.uploadProductImage(file, prod.sku || prod.id);
+        prod.image = publicUrl;
+        saveState(STORAGE_KEYS.products, state.products);
+        if (state.dbConnected) {
+          await KateDB.updateProductImage(prod.id, publicUrl);
+        }
+        renderAdmin();
+        renderFeatured();
+        if (state.activeView === "catalogo") renderCatalog();
+        showToast(`¡Foto actualizada en Supabase para ${prod.name}!`);
+      } catch (err) {
+        console.warn("Error subiendo imagen:", err?.message || err);
+        showToast("Error al subir foto. Ejecuta supabase/storage.sql en Supabase primero.");
+      }
+    });
+  });
 
   tbody.querySelectorAll("[data-save-inv]").forEach((btn) => {
     btn.addEventListener("click", async () => {
@@ -1587,16 +1621,29 @@ function bindEvents() {
     const desc = document.getElementById("npDesc").value.trim();
 
     const fallbackImgs = {
-      Vestidos: "assets/vestido-brisa.jpg",
-      Conjuntos: "assets/conjunto-cabo.jpg",
-      Blusas: "assets/blusa-palma.jpg",
-      Faldas: "assets/falda-arena.jpg",
-      Accesorios: "assets/bolso-guajira.jpg"
+      Vestidos: "./assets/vestido-brisa.jpg",
+      Conjuntos: "./assets/conjunto-cabo.jpg",
+      Blusas: "./assets/blusa-palma.jpg",
+      Faldas: "./assets/falda-arena.jpg",
+      Accesorios: "./assets/bolso-guajira.jpg"
     };
+
+    const sku = `KATE-NEW-${Math.floor(100 + Math.random() * 899)}`;
+    let imageUrl = fallbackImgs[category] || "./assets/vestido-brisa.jpg";
+    const fileInput = document.getElementById("npImageFile");
+    if (fileInput && fileInput.files && fileInput.files[0]) {
+      try {
+        showToast("Subiendo imagen a Supabase Storage...");
+        imageUrl = await KateDB.uploadProductImage(fileInput.files[0], sku);
+      } catch (err) {
+        console.warn("No se pudo subir imagen a Storage:", err?.message || err);
+        showToast("No se pudo subir la foto a Storage (ejecuta supabase/storage.sql). Se usó imagen predeterminada.");
+      }
+    }
 
     const newProd = {
       id: `prod-${Date.now()}`,
-      sku: `KATE-NEW-${Math.floor(100 + Math.random() * 899)}`,
+      sku,
       name,
       category,
       price,
@@ -1605,7 +1652,7 @@ function bindEvents() {
       badge: "Nuevo",
       stock,
       views: 1,
-      image: fallbackImgs[category] || "assets/vestido-brisa.jpg",
+      image: imageUrl,
       angles: [
         { label: "Vista frontal", pos: "50% 25%", scale: 1 },
         { label: "Detalle tela", pos: "50% 45%", scale: 1.6 },
