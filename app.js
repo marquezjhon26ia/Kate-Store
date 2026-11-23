@@ -1621,15 +1621,15 @@ function bindEvents() {
     const desc = document.getElementById("npDesc").value.trim();
 
     const fallbackImgs = {
-      Vestidos: "./assets/vestido-brisa.jpg",
-      Conjuntos: "./assets/conjunto-cabo.jpg",
-      Blusas: "./assets/blusa-palma.jpg",
-      Faldas: "./assets/falda-arena.jpg",
-      Accesorios: "./assets/bolso-guajira.jpg"
+      Vestidos: "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/vestido-brisa.jpg",
+      Conjuntos: "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/conjunto-cabo.jpg",
+      Blusas: "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/blusa-palma.jpg",
+      Faldas: "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/falda-arena.jpg",
+      Accesorios: "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/bolso-guajira.jpg"
     };
 
     const sku = `KATE-NEW-${Math.floor(100 + Math.random() * 899)}`;
-    let imageUrl = fallbackImgs[category] || "./assets/vestido-brisa.jpg";
+    let imageUrl = fallbackImgs[category] || "https://kyyydvrngcqlcpsyqfud.supabase.co/storage/v1/object/public/product-images/vestido-brisa.jpg";
     const fileInput = document.getElementById("npImageFile");
     if (fileInput && fileInput.files && fileInput.files[0]) {
       try {
