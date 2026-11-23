@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kate Store | Moda Femenina en Maicao, La Guajira</title>
+  <meta name="description" content="Tienda de ropa femenina en Maicao, La Guajira. Vestidos de lino, conjuntos, blusas, faldas y bolsos artesanales con envío local y nacional." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Barra superior promocional -->
+  <div class="top-bar">
+    Envío <strong>GRATIS</strong> en Maicao y La Guajira en compras desde $220.000 COP • Tienda física en Calle 12 # 10-45, Maicao
+  </div>
+
+  <!-- Navegación Principal -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <a href="#inicio" class="brand" data-nav="inicio">
+        <span class="brand-name">KATE STORE</span>
+        <span class="brand-sub">Maicao • La Guajira</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="Menú principal">
+        <button class="nav-link active" data-nav="inicio">Inicio</button>
+        <button class="nav-link" data-nav="catalogo">Catálogo</button>
+        <button class="nav-link" data-nav="ofertas">Ofertas</button>
+        <button class="nav-link" data-nav="contacto">Atención al Cliente</button>
+        <button class="nav-link admin-pill" data-nav="admin">⚙ Panel Admin</button>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="cart-trigger" id="openCartBtn" aria-label="Abrir carrito de compras">
+          <span>🛍️ Carrito</span>
+          <span class="cart-badge" id="cartBadge">0</span>
+        </button>
+        <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Abrir menú">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- ======================================================
+         1. PÁGINA PRINCIPAL (HOME)
+         ====================================================== -->
+    <section id="view-inicio" class="page-view">
+      <div class="hero">
+        <img src="assets/hero-banner.jpg" alt="Colección Caribe Kate Store Maicao" class="hero-bg" />
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+          <span class="hero-eyebrow">Nueva Colección • Brisa de La Guajira</span>
+          <h1 class="hero-title">Elegancia fresca para el sol del Caribe</h1>
+          <p class="hero-desc">
+            Prendas femeninas en lino natural, algodón bordado y satín ligero diseñadas para brillar en Maicao y toda Colombia. Entrega exprés el mismo día.
+          </p>
+          <div class="hero-ctas">
+            <button class="btn btn-primary" data-nav="catalogo">Comprar ahora</button>
+            <button class="btn btn-light" data-nav="ofertas">Ver ofertas</button>
+          </div>
+          <div class="hero-trust">
+            <span>✓ Envío hoy mismo en Maicao</span>
+            <span>✓ Pago seguro y contra entrega</span>
+            <span>✓ Cambios sin costo por 15 días</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Propuesta de valor -->
+      <div class="value-strip">
+        <div class="value-item">
+          <span class="value-icon">🚚</span>
+          <div>
+            <h4>Domicilio Exprés Maicao</h4>
+            <p>Recibe en 2 a 4 horas o recoge gratis en nuestra tienda del Centro.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="value-icon">🧵</span>
+          <div>
+            <h4>Telas Frescas Premium</h4>
+            <p>Lino natural, popelina y satín ideales para el clima de La Guajira.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="value-icon">🔒</span>
+          <div>
+            <h4>Pagos 100% Seguros</h4>
+            <p>Tarjetas, Nequi, Daviplata, PSE, PayPal y efectivo contra entrega.</p>
+          </div>
+        </div>
+        <div class="value-item">
+          <span class="value-icon">💬</span>
+          <div>
+            <h4>Asesoría Personalizada</h4>
+            <p>Atención directa por WhatsApp para elegir tu talla y outfit ideal.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Productos Destacados -->
+      <div class="section" style="padding-top: 0;">
+        <div class="section-header">
+          <div>
+            <span class="section-eyebrow">Favoritos de la temporada</span>
+            <h2 class="section-title">Productos Destacados</h2>
+            <p class="section-subtitle">Lo más vendido y las novedades recién llegadas a Kate Store.</p>
+          </div>
+          <button class="btn btn-outline btn-sm" data-nav="catalogo">Explorar todo el catálogo →</button>
+        </div>
+
+        <div class="product-grid" id="featuredGrid"></div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         2. MÓDULO 1: CATÁLOGO DE PRODUCTOS
+         ====================================================== -->
+    <section id="view-catalogo" class="page-view section hidden">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">Escaparate Digital</span>
+          <h2 class="section-title">Catálogo de Moda Femenina</h2>
+          <p class="section-subtitle">Filtra por categoría, talla, color o presupuesto y descubre el detalle de cada prenda.</p>
+        </div>
+      </div>
+
+      <div class="catalog-layout">
+        <!-- Panel de Filtros -->
+        <aside class="filter-panel" aria-label="Filtros de productos">
+          <div class="filter-group">
+            <label class="filter-label" for="searchInput">Buscar prenda</label>
+            <input type="text" id="searchInput" class="input-field" placeholder="Ej: vestido, lino, bolso..." />
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Categoría</span>
+            <div class="chip-list" id="categoryFilterChips"></div>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-label" for="priceRange">
+              Precio máximo: <strong id="priceRangeLabel">$300.000</strong>
+            </label>
+            <input type="range" id="priceRange" min="80000" max="300000" step="5000" value="300000" style="width:100%; accent-color: var(--primary);" />
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Talla</span>
+            <div class="chip-list" id="sizeFilterChips"></div>
+          </div>
+
+          <div class="filter-group">
+            <span class="filter-label">Color</span>
+            <div class="chip-list" id="colorFilterChips"></div>
+          </div>
+
+          <div class="filter-group">
+            <label style="display:flex; align-items:center; gap:0.55rem; font-size:0.88rem; font-weight:600; cursor:pointer;">
+              <input type="checkbox" id="onlyOffersCheck" />
+              Solo productos en oferta
+            </label>
+          </div>
+
+          <button class="btn btn-outline btn-sm btn-block" id="clearFiltersBtn">Limpiar filtros</button>
+        </aside>
+
+        <!-- Resultados del Catálogo -->
+        <div>
+          <div class="catalog-toolbar">
+            <span id="catalogCount" style="font-size:0.9rem; font-weight:600; color:var(--text-muted);"></span>
+            <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+              <select id="sortSelect" class="input-field" style="width:auto; padding:0.45rem 0.75rem;">
+                <option value="featured">Ordenar: Destacados</option>
+                <option value="price-asc">Precio: Menor a mayor</option>
+                <option value="price-desc">Precio: Mayor a menor</option>
+                <option value="views-desc">Más vistos</option>
+              </select>
+              <div class="view-toggle" role="group" aria-label="Cambiar vista">
+                <button class="view-btn active" id="gridViewBtn">▦ Cuadrícula</button>
+                <button class="view-btn" id="listViewBtn">☰ Lista</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-grid" id="catalogGrid"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         5. MÓDULO 4: ATENCIÓN AL CLIENTE (CONTACTO + FAQ)
+         ====================================================== -->
+    <section id="view-contacto" class="page-view section hidden">
+      <div class="section-header">
+        <div>
+          <span class="section-eyebrow">Estamos para ayudarte</span>
+          <h2 class="section-title">Atención al Cliente</h2>
+          <p class="section-subtitle">Resuelve tus dudas sobre envíos en Maicao, tallas, cambios o pedidos personalizados.</p>
+        </div>
+      </div>
+
+      <div class="support-grid">
+        <!-- Datos de Contacto + Formulario -->
+        <div class="card-panel">
+          <h3 class="form-section-title" style="margin-top:0;">Envíanos un mensaje</h3>
+          <form id="contactForm">
+            <div class="field">
+              <label for="contactName">Nombre completo</label>
+              <input type="text" id="contactName" class="input-field" placeholder="Tu nombre" required />
+            </div>
+            <div class="field">
+              <label for="contactEmail">Correo electrónico</label>
+              <input type="email" id="contactEmail" class="input-field" placeholder="tucorreo@ejemplo.com" required />
+            </div>
+            <div class="field">
+              <label for="contactMessage">Mensaje o consulta</label>
+              <textarea id="contactMessage" class="input-field" rows="4" placeholder="Cuéntanos sobre la prenda, tu talla o tu pedido..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Enviar mensaje</button>
+          </form>
+
+          <hr style="border:none; border-top:1px solid var(--border); margin:1.6rem 0;" />
+
+          <h3 style="font-family:var(--font-serif); margin-bottom:0.5rem;">Nuestra Tienda en Maicao</h3>
+          <div class="contact-list">
+            <div class="contact-row">
+              <div class="contact-icon">📍</div>
+              <div>
+                <strong>Dirección</strong>
+                <p style="font-size:0.88rem; color:var(--text-muted);">Calle 12 # 10-45, Local 104, Zona Comercial Centro, Maicao, La Guajira</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">📱</div>
+              <div>
+                <strong>Celular / WhatsApp</strong>
+                <p style="font-size:0.88rem; color:var(--text-muted);">+57 315 842 9104</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">✉️</div>
+              <div>
+                <strong>Correos de atención</strong>
+                <p style="font-size:0.88rem; color:var(--text-muted);">hola@katestoremaicao.co • soporte@katestoremaicao.co</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">🕒</div>
+              <div>
+                <strong>Horario de atención</strong>
+                <p style="font-size:0.88rem; color:var(--text-muted);">Lun – Sáb: 9:00 a.m. – 7:00 p.m. | Dom: 10:00 a.m. – 2:00 p.m.</p>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div class="contact-icon">📸</div>
+              <div>
+                <strong>Redes Sociales</strong>
+                <p style="font-size:0.88rem; color:var(--text-muted);">Instagram, TikTok &amp; Facebook: <strong>@katestore.maicao</strong></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preguntas Frecuentes (FAQ) -->
+        <div class="card-panel">
+          <h3 class="form-section-title" style="margin-top:0;">Preguntas Frecuentes (FAQ)</h3>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:1rem;">
+            Encuentra respuestas rápidas sobre entregas en La Guajira, métodos de pago y garantía.
+          </p>
+          <div id="faqList"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================
+         6. MÓDULO 5: ANALÍTICA Y GESTIÓN (ADMIN / BACKEND)
+         ====================================================== -->
+    <section id="view-admin" class="page-view section hidden">
+      <div class="admin-banner">
+        <div>
+          <span class="hero-eyebrow" style="margin-bottom:0.35rem;">Módulo de Gestión Comercial</span>
+          <h2 style="font-family:var(--font-serif); font-size:1.85rem;">Panel de Analítica, Inventario y Pedidos</h2>
+          <p style="font-size:0.9rem; color:#DFD5CB; margin-top:0.25rem;">
+            Controla métricas en vivo, actualiza precios/stock y gestiona los envíos de Kate Store Maicao.
+          </p>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:flex-end; gap:0.5rem;">
+          <span class="ga-badge" id="dbStatusBadge">● Conectando con Supabase...</span>
+          <span class="ga-badge">● Google Analytics 4 Conectado (G-KATESTORE26MC)</span>
+          <button class="btn btn-light btn-sm" id="resetDemoBtn">Recargar desde Supabase</button>
+        </div>
+      </div>
+
+      <!-- KPIs Principales -->
+      <div class="kpi-grid" id="adminKpis"></div>
+
+      <!-- Pestañas del Panel Admin -->
+      <div class="admin-tabs">
+        <button class="admin-tab active" data-admin-tab="analytics">📊 Dashboard de Métricas</button>
+        <button class="admin-tab" data-admin-tab="inventory">📦 Gestión de Inventario</button>
+        <button class="admin-tab" data-admin-tab="orders">🧾 Gestión de Pedidos</button>
+        <button class="admin-tab" data-admin-tab="messages">📩 Mensajes de Clientes</button>
+      </div>
+
+      <!-- Tab 1: Analítica -->
+      <div id="admin-tab-analytics" class="admin-pane">
+        <div class="charts-grid">
+          <div class="card-panel">
+            <h3 class="form-section-title" style="margin-top:0;">Visitantes últimos 7 días (GA4)</h3>
+            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:1rem;">
+              Cada recarga o visita de sesión se registra automáticamente en el contador de tráfico.
+            </p>
+            <div id="visitorsChart"></div>
+          </div>
+
+          <div class="card-panel">
+            <h3 class="form-section-title" style="margin-top:0;">Productos más vistos</h3>
+            <p style="font-size:0.84rem; color:var(--text-muted); margin-bottom:1rem;">
+              Se actualiza en tiempo real cada vez que un cliente abre el detalle de una prenda.
+            </p>
+            <div id="topProductsChart"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tab 2: Inventario -->
+      <div id="admin-tab-inventory" class="admin-pane hidden">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem; margin-bottom:1rem;">
+          <p style="font-size:0.9rem; color:var(--text-muted);">
+            Edita precios, stock disponible o añade nuevas prendas. Los cambios se reflejan de inmediato en la tienda.
+          </p>
+          <button class="btn btn-primary btn-sm" id="openNewProductBtn">+ Agregar nueva prenda</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Producto / SKU</th>
+                <th>Categoría</th>
+                <th>Precio (COP)</th>
+                <th>Stock</th>
+                <th>Vistas</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="inventoryTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 3: Pedidos -->
+      <div id="admin-tab-orders" class="admin-pane hidden">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nº Pedido</th>
+                <th>Fecha</th>
+                <th>Cliente y Contacto</th>
+                <th>Detalle</th>
+                <th>Total</th>
+                <th>Estado del Pedido</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Tab 4: Mensajes de Contacto -->
+      <div id="admin-tab-messages" class="admin-pane hidden">
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Correo</th>
+                <th>Mensaje</th>
+              </tr>
+            </thead>
+            <tbody id="messagesTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================================================
+       PIE DE PÁGINA CON POLÍTICAS LEGALES
+       ====================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <span class="brand-name" style="color:#fff;">KATE STORE</span>
+          <p style="font-size:0.88rem; margin-top:0.7rem; max-width:290px;">
+            Boutique de moda femenina contemporánea en Maicao, La Guajira. Prendas frescas y atemporales pensadas para resaltar tu estilo cada día.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navegación</h4>
+          <ul class="footer-links">
+            <li><button data-nav="inicio">Inicio</button></li>
+            <li><button data-nav="catalogo">Catálogo completo</button></li>
+            <li><button data-nav="ofertas">Ofertas especiales</button></li>
+            <li><button data-nav="contacto">Atención al cliente &amp; FAQ</button></li>
+            <li><button data-nav="admin">Panel de Administración</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Políticas Legales</h4>
+          <ul class="footer-links">
+            <li><button data-legal="privacidad">Política de Privacidad</button></li>
+            <li><button data-legal="terminos">Términos y Condiciones</button></li>
+            <li><button data-legal="devoluciones">Políticas de Devolución y Cambios</button></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Contacto Maicao</h4>
+          <ul class="footer-links">
+            <li>📍 Calle 12 # 10-45, Local 104</li>
+            <li>📱 +57 315 842 9104</li>
+            <li>✉️ hola@katestoremaicao.co</li>
+            <li>📸 @katestore.maicao</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Kate Store — Maicao, La Guajira, Colombia. Todos los derechos reservados.</span>
+        <span>Pagos aceptados: Visa • Mastercard • Nequi • Daviplata • PSE • PayPal • Efectivo</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ======================================================
+       MÓDULO 2: CARRITO DE COMPRAS (DRAWER LATERAL)
+       ====================================================== -->
+  <div class="drawer-backdrop hidden" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Carrito de compras">
+    <div class="drawer-panel">
+      <div class="drawer-header">
+        <h3 style="font-family:var(--font-serif); font-size:1.35rem;">Tu Carrito de Compras</h3>
+        <button class="modal-close" style="position:static; margin:0;" id="closeCartBtn" aria-label="Cerrar carrito">✕</button>
+      </div>
+      <div class="drawer-body" id="cartItemsContainer"></div>
+      <div class="drawer-footer" id="cartFooter"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       MODAL DE DETALLE DEL PRODUCTO (ZOOM + ÁNGULOS + VARIANTES)
+       ====================================================== -->
+  <div class="modal-backdrop hidden" id="productModal" role="dialog" aria-modal="true" aria-label="Detalle de producto">
+    <div class="modal-card">
+      <button class="modal-close" id="closeProductModal" aria-label="Cerrar detalle">✕</button>
+      <div id="productModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       MÓDULO 3: PASARELA DE PAGO (CHECKOUT)
+       ====================================================== -->
+  <div class="modal-backdrop hidden" id="checkoutModal" role="dialog" aria-modal="true" aria-label="Pasarela de pago">
+    <div class="modal-card">
+      <button class="modal-close" id="closeCheckoutModal" aria-label="Cerrar checkout">✕</button>
+      <div id="checkoutModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       MODAL POLÍTICAS LEGALES
+       ====================================================== -->
+  <div class="modal-backdrop hidden" id="legalModal" role="dialog" aria-modal="true" aria-label="Información legal">
+    <div class="modal-card narrow">
+      <button class="modal-close" style="position:static; margin:0 0 0.5rem 0;" id="closeLegalModal" aria-label="Cerrar">✕</button>
+      <div id="legalModalContent"></div>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       MODAL NUEVO PRODUCTO (ADMIN)
+       ====================================================== -->
+  <div class="modal-backdrop hidden" id="newProductModal" role="dialog" aria-modal="true" aria-label="Nuevo producto">
+    <div class="modal-card narrow">
+      <button class="modal-close" style="position:static; margin:0 0 0.5rem 0;" id="closeNewProductModal" aria-label="Cerrar">✕</button>
+      <h3 class="form-section-title" style="margin-top:0;">Agregar Nueva Prenda al Catálogo</h3>
+      <form id="newProductForm">
+        <div class="form-grid-2">
+          <div class="field">
+            <label for="npName">Nombre de la prenda</label>
+            <input type="text" id="npName" class="input-field" placeholder="Ej: Vestido Oasis Coral" required />
+          </div>
+          <div class="field">
+            <label for="npCategory">Categoría</label>
+            <select id="npCategory" class="input-field">
+              <option value="Vestidos">Vestidos</option>
+              <option value="Conjuntos">Conjuntos</option>
+              <option value="Blusas">Blusas</option>
+              <option value="Faldas">Faldas</option>
+              <option value="Accesorios">Accesorios</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="npPrice">Precio (COP)</label>
+            <input type="number" id="npPrice" class="input-field" min="10000" step="1000" value="145000" required />
+          </div>
+          <div class="field">
+            <label for="npStock">Stock inicial</label>
+            <input type="number" id="npStock" class="input-field" min="0" value="10" required />
+          </div>
+        </div>
+        <div class="field">
+          <label for="npDesc">Descripción</label>
+          <textarea id="npDesc" class="input-field" rows="3" placeholder="Descripción persuasiva de la prenda..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Guardar en el catálogo</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       WIDGET FLOTANTE DE CHAT EN VIVO Y WHATSAPP
+       ====================================================== -->
+  <div class="floating-assist">
+    <div class="chat-widget hidden" id="chatWidget">
+      <div class="chat-header">
+        <div>
+          <strong style="font-size:0.92rem;">Asesora Kate Store • Maicao</strong>
+          <div style="font-size:0.74rem; opacity:0.88;">● En línea ahora</div>
+        </div>
+        <button id="closeChatBtn" style="background:none; border:none; color:#fff; font-size:1.1rem; cursor:pointer;">✕</button>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="chat-bubble bot">
+          ¡Hola! Bienvenida a <strong>Kate Store Maicao</strong> ✨ ¿En qué podemos ayudarte hoy? Pregúntanos por tallas, envíos o pagos.
+        </div>
+      </div>
+      <form class="chat-input-bar" id="chatForm">
+        <input type="text" id="chatInput" placeholder="Escribe tu pregunta..." autocomplete="off" />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
+
+    <div style="display:flex; gap:0.55rem; align-items:center;">
+      <button class="btn btn-dark btn-sm" id="toggleChatBtn" style="box-shadow:var(--shadow);">💬 Chat en vivo</button>
+      <a class="wa-fab" href="https://wa.me/573158429104?text=Hola%20Kate%20Store%20Maicao,%20quiero%20informaci%C3%B3n%20sobre%20sus%20prendas" target="_blank" rel="noopener noreferrer">
+        <span>WhatsApp</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Contenedor de notificaciones Toast -->
+  <div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="data.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
